@@ -141,7 +141,7 @@ int main (int nNumberofArgs,char *argv[])
   string dot = ".";
   string extension = "txt";
   string filename = "_DD_junctions";
-  string_filename = DEM_name+filename+dot+extension;
+  string_filename = path_name+DEM_name+filename+dot+extension;
   ofstream DD_junctions;
   DD_junctions.open(string_filename.c_str());
   

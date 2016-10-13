@@ -104,7 +104,7 @@ int main (int nNumberofArgs,char *argv[])
 	string DEM_flt_extension = "bil";
   
   // Get list of junctions into a vector - this file is produced by ./drainage_density_step1_junctions.out
-  string ListOfJunctions = DEM_name+"_DD_junctions.txt";
+  string ListOfJunctions = path_name+DEM_name+"_DD_junctions.txt";
   vector<int> junction_list;
   int this_junction;
   string line;
@@ -164,7 +164,7 @@ int main (int nNumberofArgs,char *argv[])
   string dot = ".";
   string extension = "txt";
   string filename2 = "_drainage_density_cloud";
-  string_filename2 = DEM_name+filename2+dot+extension;
+  string_filename2 = path_name+DEM_name+filename2+dot+extension;
   ofstream DD_cloud;
   DD_cloud.open(string_filename2.c_str());
  
@@ -200,7 +200,7 @@ int main (int nNumberofArgs,char *argv[])
   // Create the text files for writing info to  
   string string_filename;
   string filename = "_drainage_density_binned";
-  string_filename = DEM_name+filename+dot+extension;
+  string_filename = path_name+DEM_name+filename+dot+extension;
   ofstream DD_binned;
   DD_binned.open(string_filename.c_str());
 
