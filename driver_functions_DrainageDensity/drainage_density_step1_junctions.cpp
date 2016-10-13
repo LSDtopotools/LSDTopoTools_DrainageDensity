@@ -90,12 +90,13 @@ int main (int nNumberofArgs,char *argv[])
   string sources_name; 
 	string fill_ext = "_fill";
 	file_info_in >> DEM_name >> sources_name;
-	float Minimum_Slope;
-	file_info_in >> Minimum_Slope;
+	float Minimum_Slope, surface_fitting_window_radius;
+	int BasinOrder;
+	file_info_in >> Minimum_Slope >> BasinOrder >> surface_fitting_window_radius;
 
 	// get some file names
 	string DEM_f_name = path_name+DEM_name+fill_ext;
-	string DEM_flt_extension = "bil";
+	string DEM_extension = "bil";
 
 	// Set the no flux boundary conditions
   vector<string> boundary_conditions(4);
@@ -105,28 +106,32 @@ int main (int nNumberofArgs,char *argv[])
 	boundary_conditions[3] = "No flux";
 	
   // get the DEM
-  LSDRaster topo_test((path_name+DEM_name), DEM_flt_extension);
+  LSDRaster topo_test((path_name+DEM_name), DEM_extension);
   LSDRaster filled_topo_test = topo_test.fill(Minimum_Slope);
-  filled_topo_test.write_raster((path_name+DEM_name+fill_ext), DEM_flt_extension);
+  filled_topo_test.write_raster((path_name+DEM_name+fill_ext), DEM_extension);
+	
+	// get the hillshade
+	string HS_name = "_HS";
+	LSDRaster HS = filled_topo_test.hillshade(45, 315, 1);
+	HS.write_raster((path_name+DEM_name+HS_name),DEM_extension);
   
   //get a FlowInfo object
 	LSDFlowInfo FlowInfo(boundary_conditions,filled_topo_test); 
   
   //get the sources from raster to vector
-  vector<int> sources = FlowInfo.Ingest_Channel_Heads((path_name+sources_name),DEM_flt_extension);
+  vector<int> sources = FlowInfo.Ingest_Channel_Heads((path_name+sources_name),DEM_extension);
   
 	// now get the junction network
 	LSDJunctionNetwork ChanNetwork(sources, FlowInfo);
 	LSDIndexRaster SOArray = ChanNetwork.StreamOrderArray_to_LSDIndexRaster();
 	string SO_name = "_SO";
-	SOArray.write_raster((path_name+DEM_name+SO_name), DEM_flt_extension);
+	SOArray.write_raster((path_name+DEM_name+SO_name), DEM_extension);
     
   string JI_name = "_JI";
   LSDIndexRaster JIArray = ChanNetwork.JunctionIndexArray_to_LSDIndexRaster();
-  JIArray.write_raster((path_name+DEM_name+JI_name), DEM_flt_extension);
+  JIArray.write_raster((path_name+DEM_name+JI_name), DEM_extension);
 	
-	// get all the 3rd order basins
-	int BasinOrder = 3;
+	// get all the basin junctions
 	vector<int> basin_junctions = ChanNetwork.extract_basins_order_outlet_junctions(BasinOrder, FlowInfo);
 	  
   cout << "Writing basin junctions to text file" << endl;
@@ -135,7 +140,7 @@ int main (int nNumberofArgs,char *argv[])
   string string_filename;
   string dot = ".";
   string extension = "txt";
-  string filename = "_DD_junctions_bedrock";
+  string filename = "_DD_junctions";
   string_filename = DEM_name+filename+dot+extension;
   ofstream DD_junctions;
   DD_junctions.open(string_filename.c_str());
@@ -148,7 +153,6 @@ int main (int nNumberofArgs,char *argv[])
  
   //get the curvature from polynomial fitting and write to a raster
   
-  float surface_fitting_window_radius = 6;      // the radius of the fitting window in metres
   vector<LSDRaster> surface_fitting;
   string curv_name = "_curv";
   vector<int> raster_selection(8, 0);
@@ -162,6 +166,6 @@ int main (int nNumberofArgs,char *argv[])
   LSDRaster CHT_temp = filled_topo_test.get_hilltop_curvature(Curvature, Hilltops);
   LSDRaster CHT = filled_topo_test.remove_positive_hilltop_curvature(CHT_temp);
   string CHT_name = "_CHT";
-  CHT.write_raster((path_name+DEM_name+CHT_name), DEM_flt_extension);
+  CHT.write_raster((path_name+DEM_name+CHT_name), DEM_extension);
   
 }
