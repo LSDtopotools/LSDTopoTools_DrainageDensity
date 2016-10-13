@@ -37,7 +37,7 @@ def make_plots(DataDirectory, DEM_name):
   
     FileName = DEM_name+'_drainage_density_cloud.txt'
     OutputFigureName = DEM_name+'_drainage_density_all_basins'
-    OutputFigureFormat = 'pdf'
+    OutputFigureFormat = 'png'
     f = open(DataDirectory + FileName,'r')  # open file
     lines = f.readlines()   # read in the data
     no_lines = len(lines)   # get the number of lines (=number of data)
@@ -156,7 +156,7 @@ def make_plots(DataDirectory, DEM_name):
     plt.xlim(0, np.max(mean_cht[np.isnan(mean_cht)==False])+0.01)
     plt.ylim(0,np.max(drainage_density)+0.001)
     
-    plt.savefig(DataDirectory+OutputFigureName + '.' + OutputFigureFormat, format=OutputFigureFormat)
+    plt.savefig(DataDirectory+OutputFigureName + '.' + OutputFigureFormat, format=OutputFigureFormat, dpi=300)
     plt.clf()
     
 if __name__ == "__main__":
