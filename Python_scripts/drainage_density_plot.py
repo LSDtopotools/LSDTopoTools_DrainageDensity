@@ -21,7 +21,7 @@ from pylab import *
 from scipy import stats
 import matplotlib.ticker as plticker
 
-def make_plots(DEM_name, DataDirectory):
+def make_plots(DataDirectory, DEM_name):
     
 
     # Set up fonts for plots
@@ -36,7 +36,7 @@ def make_plots(DEM_name, DataDirectory):
     ###############################
   
     FileName = DEM_name+'_drainage_density_cloud.txt'
-    OutputFigureName = DEM_name+'_drainage_density'
+    OutputFigureName = DEM_name+'_drainage_density_all_basins'
     OutputFigureFormat = 'pdf'
     f = open(DataDirectory + FileName,'r')  # open file
     lines = f.readlines()   # read in the data
@@ -55,8 +55,7 @@ def make_plots(DEM_name, DataDirectory):
         #print line
         drainage_density[i] = float(line[0])
         mean_cht[i] = abs(float(line[1]))
-        mean_slope[i] = float(line[2])   
-        drainage_area[i] = float(line[3])
+        drainage_area[i] = float(line[2])
         m[i] = (drainage_area[i])/10000
         
     f.close()
@@ -93,9 +92,6 @@ def make_plots(DEM_name, DataDirectory):
             dd_binned[i] = float(line_binned[3])
             dd_stdev[i] = float(line_binned[4])
             dd_sterr[i] = float(line_binned[5])
-            slope_binned[i] = float(line_binned[6])
-            slope_stdev[i] = float(line_binned[7])
-            slope_sterr[i] = float(line_binned[8])
 
     g.close()
     
@@ -160,10 +156,15 @@ def make_plots(DEM_name, DataDirectory):
     plt.xlim(0, np.max(mean_cht[np.isnan(mean_cht)==False])+0.01)
     plt.ylim(0,np.max(drainage_density)+0.001)
     
-    plt.savefig(OutputFigureName + '.' + OutputFigureFormat, format=OutputFigureFormat)
+    plt.savefig(DataDirectory+OutputFigureName + '.' + OutputFigureFormat, format=OutputFigureFormat)
     plt.clf()
     
 if __name__ == "__main__":
-    make_plots()    
+    
+    # Set the data directory here - this should point to the folder with your DEM
+    DataDirectory = 'C:\\vagrantboxes\\LSDTopoTools\\Topographic_projects\\Guadalupe_NM\\'
+    # Name of the DEM WITHOUT FILE EXTENSION
+    DEM_name = 'Guadalupe_DEM'
+    make_plots(DataDirectory, DEM_name)    
 
 	
