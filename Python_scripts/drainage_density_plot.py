@@ -15,8 +15,8 @@
 #import modules
 import numpy as np, matplotlib.pyplot as plt
 from matplotlib import rcParams
-import matplotlib.colors as colors
-import matplotlib.cm as cmx
+#import matplotlib.colors as colors
+#import matplotlib.cm as cmx
 from pylab import *
 from scipy import stats
 import matplotlib.ticker as plticker
