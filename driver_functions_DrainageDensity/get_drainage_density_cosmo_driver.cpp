@@ -186,9 +186,12 @@ int main (int nNumberofArgs,char *argv[])
                                                                 search_radius, threshold_SO, FlowInfo);
     cout << "Node index: " << NICosmo << endl;
 
-    int JunctionCosmo = ChanNetwork.find_upstream_junction_from_channel_nodeindex(NICosmo, FlowInfo);
-    cout << "Junction of cosmo point: " << JunctionCosmo << endl;
-    junction_vector.push_back(JunctionCosmo);  
+    if (NICosmo != NoDataValue)
+		{
+			int JunctionCosmo = ChanNetwork.find_upstream_junction_from_channel_nodeindex(NICosmo, FlowInfo);
+    	cout << "Junction of cosmo point: " << JunctionCosmo << endl;
+    	junction_vector.push_back(JunctionCosmo);  
+		}
   }                                                     
     
   cout << "Extracting the basins" << endl;
