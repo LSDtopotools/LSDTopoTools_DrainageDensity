@@ -156,7 +156,7 @@ int main (int nNumberofArgs,char *argv[])
 	string filename = "_cosmo";
 	string dot = ".";
 	string extension = "txt";
-  string_filename = DEM_name+filename+dot+extension;
+  string_filename = path_name+DEM_name+filename+dot+extension;
   ifstream coords_list;
   coords_list.open(string_filename.c_str());
   
@@ -226,8 +226,8 @@ int main (int nNumberofArgs,char *argv[])
   int no_junctions = junction_vector.size();  
   cout << "Number of basins: " << no_junctions << endl;
   string string_filename2;
-  string filename2 = "_drainage_density_cosmo_test";
-  string_filename2 = DEM_name+filename2+dot+extension;
+  string filename2 = "_drainage_density_cosmo";
+  string_filename2 = path_name+DEM_name+filename2+dot+extension;
   ofstream DD_cosmo;
   DD_cosmo.open(string_filename2.c_str());
   
