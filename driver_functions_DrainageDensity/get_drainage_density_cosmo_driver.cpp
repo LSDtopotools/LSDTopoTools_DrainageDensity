@@ -98,7 +98,7 @@ int main (int nNumberofArgs,char *argv[])
 
 	// get some file names
 	string DEM_f_name = path_name+DEM_name+fill_ext;
-	string DEM_flt_extension = "flt";
+	string DEM_flt_extension = "bil";
 
 	// load the DEM
 	LSDRaster topo_test((path_name+DEM_name), DEM_flt_extension);
